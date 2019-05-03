@@ -1,0 +1,264 @@
+﻿<views:SettingsViewBase
+    x:Class="RadioThermostat.UI.Views.SettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:AppFramework.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:designTime="using:RadioThermostat.Core.ViewModels.Designer"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:AppFramework.Core.Models"
+    xmlns:viewmodels="using:RadioThermostat.Core.ViewModels"
+    xmlns:views="using:RadioThermostat.UI.Views"
+    d:DataContext="{d:DesignInstance designTime:SettingsViewModel,
+                                     IsDesignTimeCreatable=True}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="{StaticResource StandardButtonMargins}" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="{StaticResource StandardButtonMargins}" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Foreground" Value="{ThemeResource SystemAccentForegroundColorBrush}" />
+            <Setter Property="Background" Value="{ThemeResource SystemAccentColor}" />
+        </Style>
+
+        <DataTemplate x:Key="PrivacyDataTemplate">
+            <ScrollViewer>
+                <StackPanel Margin="12,12,12,36">
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap">
+                        <Run>
+                            RadioThermostat collects no personal information other than anonymous usage information which will be used to optimize and improve the application
+                            in future updates.
+                        </Run>
+                        <LineBreak />
+                        <LineBreak />
+                        <Run>
+                            If you send an e-mail using the link in the settings page, an email template will be populated with information about your device
+                            and usage of the app which may include some details about your configuration. If you would like to NOT share that with us, you
+                            can delete any of the text in the generated email template that you want before you send the e-mail.
+                        </Run>
+                    </TextBlock>
+                </StackPanel>
+            </ScrollViewer>
+        </DataTemplate>
+
+        <DataTemplate x:Key="GeneralSettingsDataTemplate" x:DataType="viewmodels:GeneralSettingsViewModel">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel
+                    MaxWidth="{StaticResource FormMaxWidth}"
+                    Margin="{StaticResource StandardContentBottomMargins}"
+                    HorizontalAlignment="Left">
+                    <StackPanel.ChildrenTransitions>
+                        <TransitionCollection>
+                            <EntranceThemeTransition />
+                        </TransitionCollection>
+                    </StackPanel.ChildrenTransitions>
+
+                    <TextBlock
+                        x:Uid="/RadioThermostat.Core/Resources/tbVersion"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Text="[Version]" />
+                    <TextBlock Text="{Binding ViewModel.Platform.AppInfo.VersionNumber}" />
+                    <Border Height="{StaticResource SpacerHeight}" />
+                    <TextBlock
+                        x:Uid="/RadioThermostat.Core/Resources/tbAppFrameworkVersion"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Text="[App Framework Version]" />
+                    <TextBlock Text="{x:Bind ViewModel.AppFrameworkVersionNumber, Mode=OneWay}" />
+                    <Border Height="{StaticResource SpacerHeight}" />
+
+                    <Border Height="{StaticResource SpacerHeight}" />
+
+                    <TextBlock
+                        x:Uid="/RadioThermostat.Core/Resources/tbSupport"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Text="[Support]" />
+                    <HyperlinkButton
+                        Command="{x:Bind ViewModel.Platform.Navigation.TwitterScreenNameCommand}"
+                        CommandParameter="{x:Bind ViewModel.TwitterAddress, Mode=OneTime}"
+                        Content="{x:Bind ViewModel.TwitterAddress, Mode=OneTime}" />
+                    <HyperlinkButton
+                        x:Uid="/RadioThermostat.Core/Resources/lnkSendSupportEmail"
+                        Command="{x:Bind ViewModel.Platform.Logger.SendSupportEmailCommand}"
+                        Content="[Send us an e-mail]" />
+                    <HyperlinkButton
+                        x:Uid="/RadioThermostat.Core/Resources/btnSubmitFeedback"
+                        Command="{x:Bind ViewModel.Platform.Navigation.FeedbackCommand}"
+                        Content="[App Feedback]"
+                        Visibility="{x:Bind ViewModel.Platform.Navigation.IsFeedbackEnabled, Converter={StaticResource visConverter}}" />
+
+                    <Border Height="{StaticResource SpacerHeight}" />
+
+                    <TextBlock
+                        x:Uid="/RadioThermostat.Core/Resources/tbManage"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Text="[Manage]" />
+                    <StackPanel>
+                        <Button
+                            x:Uid="/RadioThermostat.Core/Account/btnSignout"
+                            Command="{x:Bind ViewModel.NavigateToAccountSignoutCommand}"
+                            Content="[Sign out]"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Visibility="{x:Bind ViewModel.IsUserAuthenticated, Mode=OneWay, Converter={StaticResource visConverter}}" />
+                        <Button
+                            x:Uid="/RadioThermostat.Core/Resources/btnRateApp"
+                            Command="{x:Bind ViewModel.Platform.Ratings.NavigateToRateAppCommand}"
+                            Content="[Rate application]" />
+                    </StackPanel>
+
+                    <Border Height="{StaticResource SpacerHeight}" />
+
+                    <TextBlock
+                        x:Uid="/RadioThermostat.Core/Resources/tbAppTheme"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Text="[Application Theme]" />
+                    <RadioButton
+                        x:Uid="/RadioThermostat.Core/Resources/rdoAppThemeDefault"
+                        Content="[Default]"
+                        GroupName="AppTheme"
+                        IsChecked="{x:Bind ViewModel.IsApplicationThemeDefault, Mode=TwoWay, Converter={StaticResource boolConverter}}" />
+                    <RadioButton
+                        x:Uid="/RadioThermostat.Core/Resources/rdoAppThemeLight"
+                        Content="[Light]"
+                        GroupName="AppTheme"
+                        IsChecked="{x:Bind ViewModel.IsApplicationThemeLight, Mode=TwoWay, Converter={StaticResource boolConverter}}" />
+                    <RadioButton
+                        x:Uid="/RadioThermostat.Core/Resources/rdoAppThemeDark"
+                        Content="[Dark]"
+                        GroupName="AppTheme"
+                        IsChecked="{x:Bind ViewModel.IsApplicationThemeDark, Mode=TwoWay, Converter={StaticResource boolConverter}}" />
+
+                    <Border Height="{StaticResource SpacerHeight}" />
+
+                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Configuration" />
+                    <CheckBox Content="Enable 1/2 degree temperature changes" IsChecked="{Binding ViewModel.Platform.AppSettingsRoaming.EnableHalfDegreeChanges, Mode=TwoWay, Converter={StaticResource boolConverter}}" />
+
+                    <Border Height="{StaticResource SpacerHeight}" />
+                    <TextBlock
+                        x:Uid="/RadioThermostat.Core/Resources/tbAppDiagnostics"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Text="[Application Diagnostics]" />
+                    <CheckBox
+                        x:Uid="/RadioThermostat.Core/Resources/chkEnableFullDebugging"
+                        Content="Enable full logging"
+                        IsChecked="{Binding ViewModel.AppSettingsRoaming.EnableFullLogging, Mode=TwoWay, Converter={StaticResource boolConverter}}" />
+                    <TextBlock
+                        x:Uid="/RadioThermostat.Core/Resources/tbEnableFullDebuggingDescription"
+                        Style="{StaticResource SubtleTextBlockStyle}"
+                        Text="[Description]" />
+
+                </StackPanel>
+            </ScrollViewer>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DebuggingDataTemplate" x:DataType="viewmodels:DebuggingViewModel">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="{StaticResource StandardContentBottomMargins}">
+                    <StackPanel.ChildrenTransitions>
+                        <TransitionCollection>
+                            <EntranceThemeTransition />
+                        </TransitionCollection>
+                    </StackPanel.ChildrenTransitions>
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="Margin" Value="0,0,0,12" />
+                            <Setter Property="FontSize" Value="14" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <Button Command="{x:Bind ViewModel.TestAppCrashCommand}" Content="Test application crash" />
+
+
+                    <Border Height="{StaticResource SpacerHeight}" />
+                    <Border Height="{StaticResource SpacerHeight}" />
+
+                    <TextBlock Opacity=".6" Style="{StaticResource CaptionTextBlockStyle}">Background Tasks Statuses</TextBlock>
+                    <ListView
+                        IsSwipeEnabled="false"
+                        ItemsSource="{x:Bind ViewModel.BackgroundTasksInfo, Mode=OneWay}"
+                        SelectionMode="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:BackgroundTaskRunInfo">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind TaskName}" />
+                                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}">
+                                        Lasted executed:<Run Text="{x:Bind EndTime}" /></TextBlock>
+                                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}">
+                                        Execution time:<Run Text="{x:Bind TimeToRun}" /></TextBlock>
+                                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}">
+                                        Run successful:<Run Text="{x:Bind RunSuccessfully}" /></TextBlock>
+                                    <TextBlock
+                                        Style="{StaticResource ErrorTextBlockStyle}"
+                                        Text="{x:Bind CancelReason}"
+                                        Visibility="{x:Bind CancelReason, Converter={StaticResource visConverter}}" />
+                                    <TextBlock
+                                        FontSize="11"
+                                        Style="{StaticResource ErrorTextBlockStyle}"
+                                        Text="{x:Bind ExceptionDetails}"
+                                        Visibility="{x:Bind ExceptionDetails, Converter={StaticResource visConverter}}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <Border Height="{StaticResource SpacerHeight}" />
+                    <Border Height="{StaticResource SpacerHeight}" />
+
+                </StackPanel>
+            </ScrollViewer>
+        </DataTemplate>
+
+        <!--<DataTemplate x:Key="CortanaDataTemplate">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="{StaticResource StandardContentBottomMargins}">
+                    <StackPanel.ChildrenTransitions>
+                        <TransitionCollection>
+                            <EntranceThemeTransition/>
+                        </TransitionCollection>
+                    </StackPanel.ChildrenTransitions>
+                    <TextBlock x:Uid="/RadioThermostat.Core/Resources/tbCortanaHeader" Style="{StaticResource SubtitleTextBlockStyle}">[Tips for using Cortana]</TextBlock>
+                    <TextBlock x:Uid="/RadioThermostat.Core/Resources/tbCortanaBody" Style="{StaticResource BodyTextBlockStyle}">[Start all voice and typed questions for Cortana with "<Run Foreground="{StaticResource SystemAccentColorBrush}">Show me...</Run>"]<LineBreak/></TextBlock>
+
+                    <TextBlock x:Uid="/RadioThermostat.Core/Resources/tbCortanaExamplesHeader" Style="{StaticResource SubtitleTextBlockStyle}">[For example, you can ask:]</TextBlock>
+
+                    <TextBlock x:Uid="/RadioThermostat.Core/Resources/tbCortanaExamplesBody" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource SystemAccentColorBrush}">
+                    [<Run>Show me details of Runtime Two</Run><LineBreak />
+                    <Run>Show me details of Runtime Four</Run><LineBreak />
+                    <Run>Show me details of Runtime 6</Run><LineBreak />
+                    <Run>Show me details of Runtime 13</Run><LineBreak />]
+                    </TextBlock>
+                </StackPanel>
+            </ScrollViewer>
+        </DataTemplate>-->
+
+    </Page.Resources>
+
+    <controls:BodyPanel>
+        <controls:BodyPanel.BodyContent>
+            <controls:Pivot x:Name="pivot">
+                <PivotItem
+                    ContentTemplate="{StaticResource GeneralSettingsDataTemplate}"
+                    DataContext="{x:Bind ViewModel.GeneralVM, Mode=OneWay}"
+                    Header="{x:Bind ViewModel.GeneralVM.Title}" />
+                <!--<PivotItem x:Uid="/RadioThermostat.Core/Resources/piCortana" Header="[Cortana]" ContentTemplate="{StaticResource CortanaDataTemplate}" />-->
+                <PivotItem
+                    Margin="0"
+                    ContentTemplate="{StaticResource PrivacyDataTemplate}"
+                    Header="{x:Bind ViewModel.PrivacyVM.Title}" />
+                <!--<PivotItem DataContext="{x:Bind ViewModel.PrivacyVM}" Header="{x:Bind ViewModel.PrivacyVM.Title}" ContentTemplate="{StaticResource WebBrowserDataTemplate}" Margin="0" />-->
+                <!--<PivotItem DataContext="{x:Bind ViewModel.TosVM}" Header="{x:Bind ViewModel.TosVM.Title}" ContentTemplate="{StaticResource WebBrowserDataTemplate}" Margin="0" />-->
+                <PivotItem
+                    x:Name="piDebug"
+                    ContentTemplate="{StaticResource DebuggingDataTemplate}"
+                    DataContext="{x:Bind ViewModel.DebugVM}"
+                    Header="{x:Bind ViewModel.DebugVM.Title}" />
+            </controls:Pivot>
+        </controls:BodyPanel.BodyContent>
+    </controls:BodyPanel>
+
+</views:SettingsViewBase>

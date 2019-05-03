@@ -1,0 +1,69 @@
+﻿<views:ThermostatConfigureViewBase
+    x:Class="RadioThermostat.UI.Views.ThermostatConfigureView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:views="using:RadioThermostat.UI.Views"
+    xmlns:controls="using:AppFramework.UI.Controls"
+    xmlns:designTime="using:RadioThermostat.Core.ViewModels.Designer"
+    d:DataContext="{d:DesignInstance designTime:ThermostatConfigureViewModel, IsDesignTimeCreatable=True}"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <controls:BodyPanel ContainerTemplate="{StaticResource BodyPanelScrollViewerContainerTemplate}">
+        <controls:BodyPanel.BodyContent>
+            <StackPanel MaxWidth="{StaticResource FormMaxWidth}">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBox">
+                        <Setter Property="IsReadOnly" Value="True" />
+                        <Setter Property="IsEnabled" Value="False" />
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Text="Network Address" Style="{StaticResource SubtitleTextBlockStyle}" />
+                <TextBox x:Name="txtIPAddress" Text="{x:Bind ViewModel.IPAddress, Mode=OneWay}" Header="IP Address" IsEnabled="{x:Bind ViewModel.Platform.IsXbox}" />
+
+                <Border Height="{StaticResource SpacerHeight}" />
+
+                <TextBlock Text="Model" Style="{StaticResource SubtitleTextBlockStyle}" />
+                <controls:TaskPanel Task="{x:Bind ViewModel.ModelTask, Mode=OneWay}">
+                    <TextBox Text="{x:Bind ViewModel.ModelTask.Result.Model, Mode=OneWay}" Header="Model" />
+                </controls:TaskPanel>
+
+                <Border Height="{StaticResource SpacerHeight}" />
+
+                <TextBlock Text="System" Style="{StaticResource SubtitleTextBlockStyle}" />
+                <controls:TaskPanel Task="{x:Bind ViewModel.SystemTask, Mode=OneWay}">
+                    <StackPanel>
+                        <TextBox Text="{x:Bind ViewModel.SystemTask.Result.ApiVersion, Mode=OneWay}" Header="API Version" />
+                        <TextBox Text="{x:Bind ViewModel.SystemTask.Result.FwVersion, Mode=OneWay}" Header="FW Version" />
+                        <TextBox Text="{x:Bind ViewModel.SystemTask.Result.Uuid, Mode=OneWay}" Header="UUID" />
+                        <TextBox Text="{x:Bind ViewModel.SystemTask.Result.WlanFwVersion, Mode=OneWay}" Header="WLAN Fw Version" />
+                    </StackPanel>
+                </controls:TaskPanel>
+
+                <Border Height="{StaticResource SpacerHeight}" />
+
+                <TextBlock Text="Network" Style="{StaticResource SubtitleTextBlockStyle}" />
+                <controls:TaskPanel Task="{x:Bind ViewModel.NetworkTask, Mode=OneWay}">
+                    <StackPanel>
+                        <TextBox Text="{x:Bind ViewModel.NetworkTask.Result.ssid, Mode=OneWay}" Header="SSID" />
+                        <TextBox Text="{x:Bind ViewModel.NetworkTask.Result.bssid, Mode=OneWay}" Header="BSSID" />
+                        <TextBox Text="{x:Bind ViewModel.NetworkTask.Result.ip, Mode=OneWay}" Header="IP" />
+                        <TextBox Text="{x:Bind ViewModel.NetworkTask.Result.channel, Mode=OneWay}" Header="Channel" />
+                        <TextBox Text="{x:Bind ViewModel.NetworkTask.Result.rssi, Mode=OneWay}" Header="RSSI" />
+                        <TextBox Text="{x:Bind ViewModel.NetworkTask.Result.security, Mode=OneWay}" Header="Security" />
+                    </StackPanel>
+                </controls:TaskPanel>
+            </StackPanel>
+        </controls:BodyPanel.BodyContent>
+        <controls:BodyPanel.AppBar>
+            <CommandBar>
+                <CommandBar.PrimaryCommands>
+                    <AppBarButton x:Uid="/RadioThermostat.Core/Resources/abtnDeleteThermostat" Label="[Delete Thermostat]" Icon="Delete" Command="{x:Bind ViewModel.DeleteCommand, Mode=OneWay}" />
+                    <AppBarButton x:Uid="/RadioThermostat.Core/Resources/abtnRefresh" Label="[Refresh]" Icon="Refresh" Command="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}" />
+                </CommandBar.PrimaryCommands>
+            </CommandBar>
+        </controls:BodyPanel.AppBar>
+    </controls:BodyPanel>
+    
+</views:ThermostatConfigureViewBase>

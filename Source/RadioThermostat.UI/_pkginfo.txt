@@ -1,0 +1,1 @@
+C:\Git\RadioThermostat\Source\RadioThermostat.UI\bin\ARM\Release\Upload\RadioThermostat.UI_1.6.0.0\RadioThermostat.UI_1.6.0.0_x86_x64_arm.appxbundle

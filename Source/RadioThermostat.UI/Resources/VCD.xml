@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.2">
+  <CommandSet xml:lang="en-us" Name="CommandSet_en-us">
+    <AppName> RadioThermostat </AppName>
+    <Example> Show me details of Runtime Three </Example>
+
+    <Command Name="showByName">
+      <Example> Show me details of Runtime Three </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> {DisplayVernacular} [me] details of {Name} </ListenFor>
+      <ListenFor RequireAppName="ExplicitlySpecified"> {DisplayVernacular} [me] {builtin:AppName} details of {Name} </ListenFor>
+      <Feedback> Showing details of {Name} </Feedback>
+      <Navigate />
+    </Command>
+
+    <PhraseList Label="Name">
+      <Item>One</Item>
+      <Item>Two</Item>
+      <Item>Three</Item>
+    </PhraseList>
+    
+    <PhraseList Label="DisplayVernacular">
+      <Item>show</Item>
+      <Item>view</Item>
+    </PhraseList>
+    
+  </CommandSet>
+
+</VoiceCommands>

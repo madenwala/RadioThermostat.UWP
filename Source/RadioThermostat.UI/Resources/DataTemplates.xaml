@@ -1,0 +1,13 @@
+﻿<ResourceDictionary
+    x:Class="RadioThermostat.UI.Resources.DataTemplates" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style x:Name="ThermostatListItemContainerStyle" TargetType="ListViewItem">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+
+</ResourceDictionary>
